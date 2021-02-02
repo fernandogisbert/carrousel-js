@@ -7,11 +7,28 @@ const botonRetroceder = document.querySelector('#retroceder');
 const templateCirculos = document.querySelector('#template-circulo').content.firstElementChild;
 const circulos = document.querySelector('#circulos');
 
+const parar = document.querySelector('#parar');
+const autoPLay = document.querySelector('#autoplay');
+let intervalo = null;
+const tiempoIntervalo = 1;
+
 const imagenes = ['img/foto1.jpg', 'img/foto2.jpg', 'img/foto3.jpg'];
 let pagina = 1;
 
 
 //funciones 
+
+function activarAutoPlay(){
+
+    // el condicional es para que no vaya el doble de rápido
+    if(intervalo === null) {
+        intervalo = setInterval(function(){
+            avanzarFoto();
+        }, tiempoIntervalo * 1500);
+    }
+
+}
+
 function cambiarPagina(nuevaPagina) {
     pagina = nuevaPagina;
     render();
@@ -57,7 +74,7 @@ function render() {
         if(pagina === (indice + 1)) {
             nuevoCirculo.setAttribute('checked', true);
         }
-        
+
         //mostramos
         circulos.appendChild(nuevoCirculo);
     })
@@ -68,6 +85,11 @@ function render() {
 botonAvanzar.addEventListener('click',avanzarFoto);
 botonRetroceder.addEventListener('click', retrocederFoto);
 
+autoplay.addEventListener('click',activarAutoPlay);
+parar.addEventListener('click', function() {
+    clearInterval(intervalo)
+    intervalo = null;
+});
 // inicio
 
 render();
